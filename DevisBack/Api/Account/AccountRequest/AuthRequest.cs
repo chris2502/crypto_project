@@ -9,10 +9,14 @@ namespace DevisBack.Api.Account.AccountRequest
 {
 	//TODO: Implement register authentication
 
-	public class AuthRequest: HeadRequest
+	public class AuthRequest
 	{
 		public string Email { get; set; }
+		
 	    private byte[] password;
+		
+		public string Token { get; set; }
+		
 		public bool IsvalidEmail()
 		{
 			try

@@ -8,7 +8,6 @@ using System.Net.Mail;
 using System.Net;
 using ServiceStack.Configuration;
 using DevisBack.Tools.DevisBackAnnotation;
-using System.ComponentModel;
 
 namespace DevisBack.Api.Account.Models
 {
@@ -22,10 +21,9 @@ namespace DevisBack.Api.Account.Models
         [AutoIncrement]
         public int? Id { get; set; }
 
-        [ReadOnly(true)]
+
         [Index(Unique = true)]
         public string Email { get; set; }
-        [ReadOnly(true)]
         public string Password { get; set; }
         [Index(Unique = true)]
         public string Token { get; set; }

@@ -24,7 +24,7 @@ export class NavbarComponent implements OnInit {
     var checkKey = localStorage.getItem('currentUser');
     if(checkKey == null){
       this.showLogout = true; // changed
-      console.log('null key: oue');
+      //console.log('null key: oue');
       return this.showLogout;
     } else {
       this.showLogout = false; // changed

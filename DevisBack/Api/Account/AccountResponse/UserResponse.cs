@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using DevisBack.Api;
-using DevisBack.Api.Account.Models;
 
 namespace DevisBack.Account.Api.AccountResponse
 {
-	public class UserResponse
+	public class UserResponse: AllResponse
     {
-        public int ErrorCode { get; set; }
-        public List<UserModel> ListUser { get; set; }
-        public string Message { get; set; }
+        
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
         public string Token { get; set; }
+
+        public string nameProfil { get; set; }
+
+
         public void makeToken(string password)
         {
             Random rand = new Random();

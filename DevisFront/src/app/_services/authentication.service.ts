@@ -106,7 +106,7 @@ export class AuthenticationService {
     uneCle[2] = 77;
     uneCle[3] = 88;
 
-    return this.http.get(backend.url + '/Auths/'+username+'/'+ this.chiffrer(uneCle, this.stringToByteArray(password)))
+    return this.http.get(backend.url + '/Auth/'+username+'/'+ this.chiffrer(uneCle, this.stringToByteArray(password)))
       .map((res: Response) => res.json())
      // .do( res => console.log('HTTP response :', res))
       .catch( (error: any) => Observable.throw( error.json().error || 'Server error during login' ) );
@@ -114,7 +114,7 @@ export class AuthenticationService {
   }
 
   register(email: string, password: string) {
-    return this.http.post(backend.url + '/Auths/Signup/'+email+'/'+password, '')  // To change
+    return this.http.post(backend.url + '/Auth/Signup/'+email+'/'+password, '')  // To change
       .map((response: Response) => response.json())
       .catch( (error: any) => Observable.throw (error.json().error || 'Server error during register'));
   }

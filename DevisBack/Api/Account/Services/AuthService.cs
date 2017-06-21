@@ -10,7 +10,6 @@ using DevisBack.Api.Account.Models;
 using DevisBack.Tools.StaticTools;
 using ServiceStack.ServiceInterface;
 using MySql.Data.MySqlClient;
-using DevisBack.Api.DevisException;
 
 namespace DevisBack.Api.Account.Services
 {
@@ -74,10 +73,6 @@ namespace DevisBack.Api.Account.Services
 
         public AuthResponse Post(AuthRequest request)
         {
-            if(!Authorizations.IsAdmin(Db, request.Token))
-            {
-                throw new AuthorizationException("Permission denied: You are not admin");
-            }
             if (!request.IsvalidEmail())
             {
                 throw new FormatException("L'adresse email n'est pas valide"); 
@@ -89,25 +84,21 @@ namespace DevisBack.Api.Account.Services
                 IsEnable = true
 
             };
+            bool check = true;
             try
             {
                 Db.Save(Auth);
             }catch(MySqlException ms)
             {
-                if(ms.Number == 1062)
-                {
-                    return new AuthResponse
-                    {
-                        Code = CodeHttp.INTERNAL_SERVER_ERROR,
-                        Message = ms.Message
-                    };
-                }
                 Console.WriteLine(ms);
+                check = false;
             }
-            return new AuthResponse
+            AuthResponse authResponseModel = new AuthResponse
             {
-                Code = CodeHttp.OK
+				Code = check ? CodeHttp.OK:CodeHttp.INTERNAL_SERVER_ERROR
             };
+
+            return authResponseModel;
         }
 
         public AuthResponse Put(AuthRequest request)

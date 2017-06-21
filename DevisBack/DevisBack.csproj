@@ -42,6 +42,7 @@
   <ItemGroup>
     <Reference Include="ServiceStack, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ServiceStack.3.9.71\lib\net35\ServiceStack.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ServiceStack.Common.3.9.71\lib\net35\ServiceStack.Common.dll</HintPath>
@@ -63,6 +64,7 @@
     </Reference>
     <Reference Include="ServiceStack.ServiceInterface, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ServiceStack.3.9.71\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ServiceStack.Text, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ServiceStack.Text.3.9.71\lib\net35\ServiceStack.Text.dll</HintPath>
@@ -105,12 +107,9 @@
     <Compile Include="Api\Access\AccessRequest\AccessGroupRequest.cs" />
     <Compile Include="Api\Account\AccountRequest\ProfilRequest.cs" />
     <Compile Include="Api\Account\Services\ProfilService.cs" />
-    <Compile Include="Api\DevisException\AuthorizationException.cs" />
-    <Compile Include="CBC\CBC.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Api\DevisException\AbstractDevisResponse.cs" />
     <Compile Include="Api\Account\AccountRequest\AuthRequest.cs" />
     <Compile Include="Api\Account\AccountRequest\UserRequest.cs" />
     <Compile Include="Api\Account\AccountResponse\AuthResponse.cs" />
@@ -155,6 +154,7 @@
     <Compile Include="Api\Access\Services\AccessUnitService.cs" />
     <Compile Include="Api\Access\Services\FieldNameService.cs" />
     <Compile Include="Api\Access\Services\PermissionService.cs" />
+    <Compile Include="Api\Access\Services\ProfilService.cs" />
     <Compile Include="Api\Access\Services\TableAccessCompositionService.cs" />
     <Compile Include="Tools\DevisBackAnnotation\OneToManydAttribute.cs" />
     <Compile Include="Tools\StaticTools\RefactorFunction.cs" />
@@ -189,5 +189,7 @@
   </ProjectExtensions>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="NewFolder1\" />
+  </ItemGroup>
 </Project>

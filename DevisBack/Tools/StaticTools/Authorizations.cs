@@ -1,48 +1,14 @@
 ﻿using System;
 using System.Data;
 using System.Reflection;
-using ServiceStack.OrmLite;
 using System.Collections.Generic;
 using System.Runtime.Remoting;
 using DevisBack.Tools.DevisBackAnnotation;
-using DevisBack.Api.Account.Models;
-using MySql.Data.MySqlClient;
-using System.Linq;
 
 namespace DevisBack.Tools.StaticTools
 {
 	public static class Authorizations
 	{
-
-        public static bool IsAdmin(IDbConnection Db, string token)
-        {
-            
-
-            ProfilModel profil = Db.Query<ProfilModel>("Name=@Name", 
-                                                        new { Name = "Admin" })
-                                                        .FirstOrDefault();
-            
-
-            AuthModel auth = Db.Query<AuthModel>("Token=@Token",
-                                                        new {Token = token })
-                                                        .FirstOrDefault();
-            if (profil == null || auth == null)
-                return false;
-            UserModel user = Db.Query<UserModel>("ProfilModelId=@ProfilModelId AND AuthmodelId=@AuthModelId",
-                                            new { ProfilModelId = profil.Id, AuthModelId = auth.Id })
-                                            .FirstOrDefault();
-            if (user != null)
-                return true; 
-            return false;
-        }
-
-        public static bool IsConnect(IDbConnection Db, string token)
-        {
-            AuthModel auth = Db.SingleWhere<AuthModel>("Token", token);
-            if (auth != null)
-                return true;
-            return false;
-        }
 		//Check and return true, if the class itself is marked by annotation AuthorizationsAttribute
 		//else return false
 		public static bool IsAuthorizationClassAttribute(MemberInfo member)
