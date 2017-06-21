@@ -75,10 +75,13 @@ namespace DevisBack
                     .Add(typeof(AuthRequest), "/Auths/{Email}", "GET", "Authentication",
                                                 "this get is used when the user forgot his password and he want to change")
 
-                    .Add(typeof(AuthRequest), "/Auths/{Token}/{Email}/{Password}", "POST, GET", "Authentication",
+                    .Add(typeof(AuthRequest), "/Auths/{Token}/{Email}/{Password}", "POST", "Authentication",
                                                 "When verb used, is POST, it's for sign up. else it's for connect to app" +
                                                 "When you used POST, you need token Admin")
 
+                    .Add(typeof(AuthRequest), "/Auths/{Email}/{Password}", "GET", "Authentication",
+                                                "When verb used, is POST, it's for sign up. else it's for connect to app" +
+                                                "When you used POST, you need token Admin")
                     .Add(typeof(AuthRequest), "/Auths/{Token}/{Password}", "PUT", "Authentication",
                                                 "It's used to change password")
 
