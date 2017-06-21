@@ -7,84 +7,78 @@ using DevisBack.Api.Account.AccountRequest;
 using DevisBack.Api.Account.Models;
 using DevisBack.Account.Api.AccountResponse;
 using ServiceStack.ServiceInterface;
-using DevisBack.Tools.StaticTools;
-using MySql.Data.MySqlClient;
-using System.Data;
-using DevisBack.Api.DevisException;
 
 namespace DevisBack.Api.Account.Services
 {
 	public class UserService: Service
 	{
-		public UserResponse Get(UserRequest request)
+		public object Get(UserRequestModel request)
 		{
             
-            if(request.Token != null)
+            if(request.Id != null)
             {
-                AuthModel auth = Db.SingleWhere<AuthModel>("Token", request.Token);
-                UserModel user = Db.SingleWhere<UserModel>("AuthModelId", auth.Id);
-                ProfilModel profil = Db.SingleWhere<ProfilModel>("Id", user.ProfilModelId);
-                user.Auth = auth;
-                user.Profil = profil;
-                return new UserResponse
+                List<UserModel> userList = Db.Select<UserModel>("Id = @Id", new { Id = request.Id});
+                List<UserResponse> userResponseList = new List<UserResponse>();
+                foreach(UserModel userTmp in userList)
                 {
-                    ListUser = new List<UserModel>
-                    (
-                        new UserModel[]
-                        {
-                            user
-                        }
-                    )
-                };
+                    userResponseList.Add(new UserResponse
+                    {
+                        FirstName = userTmp.FirstName,
+                        LastName = userTmp.LastName,
+                        nameProfil = userTmp.Profil.Name,
+                        Token = userTmp.Auth.Token
+                    });
+                }
+                return userResponseList;
             }
-            return new UserResponse
+
+            else if(request.FirstName != null && request.LastName != null)
             {
-                ListUser = Db.Select<UserModel>()
-            };
+                List<UserModel> userList = Db.Select<UserModel>("Id = @Id AND FirstName = @FirstName AND LastName = @LastName", 
+                                                                new
+                                                                {
+                                                                    Id = request.Id,
+                                                                    FirstName = request.FirstName,
+                                                                    LastName =request.LastName
+                                                                });
+
+                List<UserResponse> userResponseList = new List<UserResponse>();
+                foreach (UserModel userTmp in userList)
+                {
+                    userResponseList.Add(new UserResponse
+                    {
+                        FirstName = userTmp.FirstName,
+                        LastName = userTmp.LastName,
+                        nameProfil = userTmp.Profil.Name,
+                        Token = userTmp.Auth.Token
+                    });
+                }
+                return userResponseList;
+            }
+
+            return Db.Select<UserModel>();
+
         }
 
 
-        public UserResponse Post(UserRequest request)
+        public object Post(UserRequestModel request)
         {
-           // ComplexeRequest.PopulateRequest(ref request, Request);
-
             AuthModel authTemp = Db.SingleWhere<AuthModel>("Token", request.Token);
-            if (!Authorizations.IsConnect(Db, request.Token))
-                throw new AuthorizationException("Permission denied: You do not connect", CodeHttp.BAD_REQUEST);
-            ProfilModel profilTemp = null;
-            if (request.ProfilId != null)
-                profilTemp = Db.SingleWhere<ProfilModel>("ProfilId", request.ProfilId);
-            
-            UserModel user = new UserModel
+            var user = new UserModel
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                AuthModelId =authTemp.Id,
-                ProfilModelId = (profilTemp != null) ?profilTemp.Id:null  
+                Auth = authTemp,
+                Profil = new ProfilModel
+                            {
+                                Name = request.NameProfil
+                            }
             };
-            using(IDbTransaction trans = Db.OpenTransaction())
-            {
-                try
-                {
-                    Db.Save(user);
-                    trans.Commit();
-                }
-                catch (MySqlException mse)
-                {
+            Db.Save(user);
 
-                    return new UserResponse
-                    {
-                        ErrorCode = CodeHttp.INTERNAL_SERVER_ERROR,
-                        Message = mse.Message
-                    };
-                }
-            }
-
+			UserResponse userResponseModel = new UserResponse ();
             
-            return new UserResponse
-            {
-                ErrorCode = CodeHttp.OK
-            };
+            return userResponseModel;
         }
     }
 }

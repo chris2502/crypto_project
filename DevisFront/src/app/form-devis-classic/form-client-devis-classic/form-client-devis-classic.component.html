@@ -1,0 +1,49 @@
+<div class="container">
+  <h1>Information client</h1>
+  <form #f="ngForm" novalidate>
+    <div class="form-group">
+      <label>Nom du site</label>
+      <input type="text" class="form-control" name="siteName" [(ngModel)]="client.siteName">
+    </div>
+    <div class="form-group">
+      <label>Secteur</label>
+      <input type="text" class="form-control" name="sector" [(ngModel)]="client.sector">
+    </div>
+    <div class="form-group">
+      <label>Adresse</label>
+      <input type="text" class="form-control" name="address" [(ngModel)]="client.address">
+    </div>
+    <div class="form-group">
+      <label>Code Postal</label>
+      <input type="text" class="form-control" name="postalCode" [(ngModel)]="client.postalCode">
+    </div>
+    <div class="form-group">
+      <label>Ville</label>
+      <input type="text" class="form-control" name="city" [(ngModel)]="client.city" ngModel required>
+    </div>
+    <div class="form-group">
+      <label>Téléphone</label>
+      <input type="text" class="form-control" name="phone" [(ngModel)]="client.phone">
+    </div>
+    <div class="form-group">
+      <label>Fax</label>
+      <input type="text" class="form-control" name="fax" [(ngModel)]="client.fax">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="text" class="form-control" name="mail" [(ngModel)]="client.mail">
+    </div>
+    <div class="form-group">
+      <label>Interlocuteur</label>
+      <input type="text" class="form-control" name="interlocutor" [(ngModel)]="client.interlocutor">
+    </div>
+
+    <button type="submit" (click)="save(f.value, f.valid)" class="btn btn-default">Valider</button>
+  </form>
+  <div style="margin-top: 20px" *ngIf="f">
+    <div>Form details:-</div>
+    <pre>Is form valid?: <br>{{f.valid | json}}</pre>
+    <pre>Is form submitted?: <br>{{f.submitted | json}}</pre>
+    <pre>submitted value: <br>{{f.value | json}}</pre>
+  </div>
+</div>

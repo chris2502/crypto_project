@@ -17,12 +17,12 @@ using DevisBack.Api.Account.Models;
 using DevisBack.Tools.StaticTools;
 using DevisBack.Api.Access.AccessRequest;
 using DevisBack.Api.Access.Models;
+
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
 
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
-using DevisBack.Api.Access.Services;
 
 namespace DevisBack
 {
@@ -55,43 +55,30 @@ namespace DevisBack
 				// Enable the validation feature
 				Plugins.Add(new ValidationFeature());
 
-				// This method scans the assembly for validators
-				container.RegisterValidators(typeof(AccessUnitService).Assembly);
+
 
 
                 //register any dependencies your services use, e.g:
                 //container.Register<ICacheClient>(new MemoryCacheClient());
                 Routes
-                    .Add(typeof(AccessGroupRequest), "/AccessGroup/{Token}", "POST, GET", "Test", "Test group")
-
+                    .Add(typeof(AccessGroupRequest), "/Acces", "POST", "Test", "Test group")
                     .Add(typeof(AccessUnitRequest), "/AccesChamps/{Token}", "GET")
                     .Add(typeof(AccessUnitRequest), "/AccesChamps/{Token}/{Id}", "GET")
                     .Add(typeof(AccessUnitRequest), "/AccesChamps/{Token}/{Name}/{NameClassAssociate}", "GET")
 
                     .Add(typeof(AccessUnitRequest),
                         "/AccesChamps/{Token}/{NameField}/{NameClassAssociate}/{Readable}/{Writable}", "POST")
+                    //this get is used when the user forgot his password and he want to change
+                    .Add(typeof(AuthRequest), "/Auth/Forgot/{Email}", "GET")
+                    .Add(typeof(AuthRequest), "/Auth/{Token}", "GET")
+                    .Add(typeof(AuthRequest), "/Auth/{Email}/{Password}", "GET")
 
+                    .Add(typeof(AuthRequest), "/Auth/Signup/{Email}/{Password}", "POST")
 
-                    .Add(typeof(AuthRequest), "/Auths/{Email}", "GET", "Authentication",
-                                                "this get is used when the user forgot his password and he want to change")
+                    .Add(typeof(AuthRequest), "/Auth/Update/{Token}/{Password}", "PUT")
+                    .Add(typeof(AuthRequest), "/Auth/Disconnect/{Token}", "PUT")
 
-                    .Add(typeof(AuthRequest), "/Auths/{Token}/{Email}/{Password}", "POST, GET", "Authentication",
-                                                "When verb used, is POST, it's for sign up. else it's for connect to app" +
-                                                "When you used POST, you need token Admin")
-
-                    .Add(typeof(AuthRequest), "/Auths/{Token}/{Password}", "PUT", "Authentication",
-                                                "It's used to change password")
-
-                    .Add(typeof(AuthRequest), "/Auths/{Token}", "PUT, DELETE, GET", "Authentication",
-                                                "Verb PUT is uused to disconnect to app. Delete is used to  delete user." +
-                                                 "Get is used to list info's authentication")
-
-
-
-
-
-
-
+                    .Add(typeof(AuthRequest), "/Auth/Delete/{Token}", "DELETE")
 
 
                     .Add<FieldNameRequest>("/Champs/{Token}", "GET")
@@ -109,25 +96,35 @@ namespace DevisBack
                     .Add(typeof(PermissionRequest), "/Permissions/Add/{Readable}/{Writable}", "POST")
 
 
-                    .Add(typeof(ProfilRequest), "/Profils", "GET,POST", "Profil", "List of profils")
+                    .Add(typeof(ProfilRequest), "/Profils", "GET", "Profil", "List of profils")
                     .Add(typeof(ProfilRequest), "/Profils/{Id}", "GET", "Profil", "Get profil by Id")
                     .Add(typeof(ProfilRequest), "/Profils/{Name}", "GET", "Profil", "Get profil by Name")
 
                     .Add(typeof(ProfilRequest), "/Profils", "POST", "Write Profil", "Save profil with Json data")
 
-                    .Add<UserRequest>("/Users/{Token}", "GET")
-                    .Add<UserRequest>("/Users/{Token}/{NameProfil}/{FirstName}/{LastName}", "GET")
-                    .Add<UserRequest>("/Users/{Token}/{Id}", "GET")
+                    .Add<UserRequestModel>("/User/{Token}", "GET")
+                    .Add<UserRequestModel>("/User/{Token}/{NameProfil}/{FirstName}/{LastName}", "GET")
+                    .Add<UserRequestModel>("/User/{Token}/{Id}", "GET")
 
-                    .Add<UserRequest>("/User/{Token}/{FirstName}/{LastName}", "POST")
+                    .Add<UserRequestModel>("/User/{Token}/{FirstName}/{LastName}", "POST")
 
-                    .Add(typeof(TableAccessCompositionRequest), "/Access", "GET, POST")
+
+
+                    .Add(typeof(TableAccessCompositionRequest), "/Access", "GET, POST", "Write Access", "Write access with json: childGroup represents a group of access which can have another  Eg:" +
+                    "{ \"Name\":\"Composite1\", \"Permission\":{ \"Readable\": \"true\", \"Writable\":\"false\"}, \"ChildGroup\":{\"Name\":\"Composite4\"," +
+                    " \"Permission\":{ \"Readable\": \"false\", \"Writable\":\"true\"}," +
+                    " \"ListAccessUnit\":[{\"Permission\":{\"Readable\": \"true\", \"Writable\":\"false\"}," +
+                    " \"FieldName\":{\"Name\":\"CoefficientUsed\", \"NameClassAssociate\": \"DevisBack.Api.ClassicCleaning.Model.PurchasseEquipmentModel\"}},]}," +
+                    "\"ListAccessUnit\":[{\"Permission\":{\"Readable\": \"true\", \"Writable\":\"true\"}," +
+                    " \"FieldName\":{\"Name\":\"Address\", \"NameClassAssociate\": \"DevisBack.Api.ClassicCleaning.Model.Client\"}}," +
+                    " {\"Permission\":{\"Readable\": \"false\", \"Writable\":\"false\"},\"FieldName\":{\"Name\":\"City\", \"NameClassAssociate\": \"DevisBack.Api.ClassicCleaning.Model.Client\"}" +
+                    "}]}")
 
                     .Add(typeof(TableAccessCompositionRequest), "/Access/ByComposite/{CompositeId}", "GET", "Read Access", "return list of Access got by CompositeId")
                     .Add(typeof(TableAccessCompositionRequest), "/Access/ByLeaf/{LeafId}", "GET", "Read Access", "Return list of Access Got by LeafId")
+                    ;
 
-                    .Add(typeof(TableAccessCompositionRequest), "/Access/{Id}", "DELETE", "Access", "Delete access");
-
+                    
 
                 AppSettings appSettings = new AppSettings();
 
@@ -141,6 +138,7 @@ namespace DevisBack
                         
                         try
                         {
+                           
                             db.CreateTableIfNotExists<PermissionModel>();
                             db.ExecuteSql("INSERT IGNORE INTO PermissionModel (Readable, Writable) VALUES(1, 1)");
                             db.ExecuteSql("INSERT IGNORE INTO PermissionModel (Readable, Writable) VALUES(1, 0)");
@@ -151,9 +149,9 @@ namespace DevisBack
                             db.CreateTableIfNotExists<TableAccessCompositionModel>();
                             db.CreateTableIfNotExists<AccessGroupModel>();
                             db.CreateTableIfNotExists<AccessUnitModel>();
-                            db.CreateTableIfNotExists<ProfilModel>();
+                            db.CreateTableIfNotExists<ProfilRequest>();
                             db.CreateTableIfNotExists<UserModel>();
-                      
+                           
            
                         }catch (MySqlException e)
                         {
@@ -169,9 +167,9 @@ namespace DevisBack
 						// Like On eg: get(AuthRequestModel request)
 						StoreFieldToDatabase.DumpAttributes (typeof(AuthModel));
 						
-                        
                 }
 
+                
                
             }
 

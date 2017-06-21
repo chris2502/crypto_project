@@ -19,7 +19,7 @@ namespace DevisBack.Api.Account.Models
         public int? AccessGroupModelId { get; set; }
 
         [Ignore]
-        public AccessGroupModel AccessGroup { get; set; }
+        public AccessGroupModel Access { get; set; }
 
 	}
 }

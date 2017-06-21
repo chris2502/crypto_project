@@ -7,11 +7,9 @@ using System.ComponentModel;
 
 namespace DevisBack.Api.Account.AccountResponse
 {
-	public class AuthResponse
+	public class AuthResponse: AllResponse
     {
-        public int Code { get; set; }
         public string Email { get; set; }
-        public string Message { get; set; }
         public string Token { get; set; }
 		[Description("Value is 0 when all is right. And -1 when there is some problem" +
 		             " eg: When Api need to send a mail, if mail isn't sent, Code equals to -1" +

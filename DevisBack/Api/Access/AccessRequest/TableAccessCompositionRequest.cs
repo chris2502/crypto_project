@@ -8,9 +8,6 @@ namespace DevisBack.Api.Access.AccessRequest
 	
     public class TableAccessCompositionRequest
     {
-        public int? Id { get; set; }
-        public int? SelfId { get; set; }
-        public int? SelfAssociateId { get; set; }
         /** use in service to populate abstractAccessAppli, accessGroup, accessunit by id **/
         public int? CompositeId { get; set; }
         public int[] LeafId { get; set; }

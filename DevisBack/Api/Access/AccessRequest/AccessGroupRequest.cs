@@ -6,7 +6,7 @@ using System.Web;
 
 namespace DevisBack.Api.Access.AccessRequest
 {
-    public class AccessGroupRequest: HeadRequest
+    public class AccessGroupRequest
     {
         /** use in service to populate abstractAccessAppli, accessGroup, accessunit by id **/
         public int? CompositeId { get; set; }

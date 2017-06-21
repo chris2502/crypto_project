@@ -24,6 +24,9 @@ import { Ng2TableModule } from 'ng2-table/ng2-table';
 
 import { PaginationModule } from 'ngx-bootstrap';
 import { TabsModule } from 'ngx-bootstrap';
+import { FormDevisClassicComponent } from './form-devis-classic/form-devis-classic.component';
+import { FormClientDevisClassicComponent } from './form-devis-classic/form-client-devis-classic/form-client-devis-classic.component';
+import { FormWorkPlaceDevisClassicComponent } from './form-devis-classic/form-work-place-devis-classic/form-work-place-devis-classic.component';
 
 
 
@@ -37,7 +40,10 @@ import { TabsModule } from 'ngx-bootstrap';
     HomeComponent,
     AlertComponent,
     RegisterComponent,
-    DevisClassicComponent
+    DevisClassicComponent,
+    FormDevisClassicComponent,
+    FormClientDevisClassicComponent,
+    FormWorkPlaceDevisClassicComponent
   ],
   imports: [
     BrowserModule,
