@@ -1,0 +1,10 @@
+<div class="login-page">
+  <div class="form">
+    <form class="login-form" role="form" (submit)="login($event, username.value, password.value)">
+      <input type="text" #username id="username" placeholder="Identifiant"/>
+      <input type="password" #password id="password" placeholder="Mot de passe"/>
+      <button type="submit">Connexion</button>
+      <p class="message">Pas encore inscrit? <a [routerLink]="['/register']">Inscrivez-vous</a></p>
+    </form>
+  </div>
+</div>

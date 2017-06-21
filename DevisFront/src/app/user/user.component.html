@@ -1,0 +1,29 @@
+<br/>
+
+<h1>{{title}}</h1>
+
+
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of users" >
+    <th scope="row">{{user.Id}}</th>
+    <td>{{user.FirstName}}</td>
+    <td>{{user.LastName}}</td>
+  </tr>
+  </tbody>
+</table>
+
+
+<!--
+<a [routerLink]="['/login']"> déconnexion</a>
+
+
+-->

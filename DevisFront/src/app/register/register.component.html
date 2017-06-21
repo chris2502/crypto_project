@@ -1,0 +1,25 @@
+<div class="register-page">
+  <div class="form">
+    <form name="form" (ngSubmit)="f.form.valid && register(username.value,password.value)" #f="ngForm" novalidate>
+
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+          <input type="text" class="form-control" name="username" [(ngModel)]="userCreate.username" #username="ngModel" required placeholder="Identifiant"/>
+          <div *ngIf="f.submitted && !username.valid" class="help-block">Nom d'utilisateur requis</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+
+          <input type="password" class="form-control" name="password" [(ngModel)]="userCreate.password" #password="ngModel" required placeholder="Mot de passe"/>
+          <div *ngIf="f.submitted && !password.valid" class="help-block">Mot de passe requis</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !passwordConfirm.valid}">
+
+          <input type="password" class="form-control" name="passwordConfirm" [(ngModel)]="userCreate.passwordConfirm" #passwordConfirm="ngModel" required placeholder="Ressaisir le mot de passe"/>
+          <div *ngIf="f.submitted && !passwordConfirm.valid " class="help-block">Mot de passe de confirmation requis</div>
+          <div *ngIf="checkPassword(passwordConfirm.value,password.value)" class="help-block">Mot de passe non identique</div>
+
+      </div>
+      <button [disabled]="loading" >S'inscrire</button>
+      <p class="message">Déjà inscrit ? <a [routerLink]="['/login']">Connectez vous</a></p>
+    </form>
+  </div>
+</div>
