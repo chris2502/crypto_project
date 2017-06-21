@@ -83,7 +83,7 @@ export class AuthenticationService {
   }
 
   stringToByteArray(source: string) : Uint8Array {
-    var resultSize = source.length + (TAILLE_BLOC-source.length%TAILLE_BLOC);
+    var resultSize = source.length + (TAILLE_BLOC-source.length%TAILLE_BLOC)%TAILLE_BLOC;
     var result = new Uint8Array(resultSize);
     for(var i = 0 ; i < resultSize ; i++) {
       if(i<source.length) {
@@ -114,7 +114,15 @@ export class AuthenticationService {
   }
 
   register(email: string, password: string) {
-    return this.http.post(backend.url + '/Auth/Signup/'+email+'/'+password, '')  // To change
+
+    var uneCle = new Uint8Array(TAILLE_BLOC);
+
+    uneCle[0] = 55;
+    uneCle[1] = 66;
+    uneCle[2] = 77;
+    uneCle[3] = 88;
+
+    return this.http.post(backend.url + '/Auth/Signup/'+email+'/'+this.chiffrer(uneCle, this.stringToByteArray(password)), '')  // To change
       .map((response: Response) => response.json())
       .catch( (error: any) => Observable.throw (error.json().error || 'Server error during register'));
   }
