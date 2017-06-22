@@ -125,6 +125,7 @@
     <Compile Include="Api\HeadRequest.cs" />
     <Compile Include="Tools\DevisBackAnnotation\ReferenceAttribute.cs" />
     <Compile Include="Tools\StaticTools\Authorizations.cs" />
+    <Compile Include="Tools\StaticTools\BCrypt.cs" />
     <Compile Include="Tools\StaticTools\CodeHttp.cs" />
     <Compile Include="Tools\StaticTools\ComplexeRequest.cs" />
     <Compile Include="Tools\StaticTools\ReferenceToDataBase.cs" />

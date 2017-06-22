@@ -45,13 +45,19 @@ namespace DevisBack.Api.Account.Services
             if (request.Token != null)
             {
                 authList = Db.Select<AuthModel>(x => x.Token == request.Token && x.IsEnable == true);
+
             }
             else if (request.Email != null && request.Password != null)
             {
-                authList =
-                    Db.Select<AuthModel>(
-                        x => x.Email == request.Email && x.Password == request.Password && x.IsEnable == true);
 
+                AuthModel authsimple = Db.Select<AuthModel>(x => x.Email == request.Email && x.IsEnable == true).FirstOrDefault();
+                if(authsimple != null){
+                    authList = new List<AuthModel>();
+
+                    if(BCrypt.CheckPassword(request.Password, authsimple.Password)){
+                        authList.Add(authsimple);
+                    }                                                                                       
+                }
             }
             /*else if (request.Email != null)
             {
@@ -107,13 +113,16 @@ namespace DevisBack.Api.Account.Services
             {
                 throw new FormatException("L'adresse email n'est pas valide");
             }
+            string mySalt = BCrypt.GenerateSalt();
+            string myHashedPassword = BCrypt.HashPassword(request.Password, mySalt);
             AuthModel Auth = new AuthModel
             {
                 Email = request.Email,
-                Password = request.Password,
+                Password = myHashedPassword,
                 IsEnable = true
 
             };
+            Console.WriteLine(Auth.Password);
             bool check = true;
             try
             {
