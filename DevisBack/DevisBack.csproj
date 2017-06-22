@@ -107,6 +107,7 @@
     <Compile Include="Api\Access\AccessRequest\AccessGroupRequest.cs" />
     <Compile Include="Api\Account\AccountRequest\ProfilRequest.cs" />
     <Compile Include="Api\Account\Services\ProfilService.cs" />
+    <Compile Include="CBC\CBC.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

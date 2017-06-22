@@ -76,7 +76,7 @@ namespace DevisBack.Api.Account.Services
                 {
                     authTmp.GenerataDoubleAuthenticate();
                     Db.Update(authTmp);
-                    authTmp.sendMail("http://localhost:50304//Auth/Mail/" + request.Email + "/" + authTmp.DoubleAuthenticate);
+                    authTmp.sendMail("http://localhost:4200//Auth/Mail/" + request.Email + "/" + authTmp.DoubleAuthenticate);
                     return new AuthResponse
                     {
                         Code = CodeHttp.OK
