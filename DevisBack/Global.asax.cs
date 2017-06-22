@@ -72,6 +72,7 @@ namespace DevisBack
                     .Add(typeof(AuthRequest), "/Auth/Forgot/{Email}", "GET")
                     .Add(typeof(AuthRequest), "/Auth/{Token}", "GET")
                     .Add(typeof(AuthRequest), "/Auth/{Email}/{Password}", "GET")
+                    .Add(typeof(AuthRequest), "/Auth/Mail/{Email}/{DoubleAuthenticate}", "GET")
 
                     .Add(typeof(AuthRequest), "/Auth/Signup/{Email}/{Password}", "POST")
 

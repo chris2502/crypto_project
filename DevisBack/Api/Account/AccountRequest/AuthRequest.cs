@@ -10,7 +10,8 @@ namespace DevisBack.Api.Account.AccountRequest
 		public string Email { get; set; }
 		public string Password { get; set; }
 		public string Token { get; set; }
-		public bool IsvalidEmail()
+        public string DoubleAuthenticate { get; set; }
+        public bool IsvalidEmail()
 		{
 			try
 			{
