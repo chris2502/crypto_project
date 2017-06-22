@@ -1,0 +1,54 @@
+<div class="container">
+  <h1>Lieux des travaux</h1>
+  <form #f="ngForm" novalidate>
+    <div class="form-group">
+      <label>Adresse</label>
+      <input type="text" class="form-control" name="adress" [(ngModel)]="workplace.adress">
+    </div>
+    <div class="form-group">
+      <label>Code postal</label>
+      <input type="text" class="form-control" name="postalCode" [(ngModel)]="workplace.postalCode">
+    </div>
+    <div class="form-group">
+      <label>Ville</label>
+      <input type="text" class="form-control" name="city" [(ngModel)]="workplace.city">
+    </div>
+    <div class="form-group">
+      <label>Numéro de téléphone</label>
+      <input type="text" class="form-control" name="phoneNumber" [(ngModel)]="workplace.phoneNumber">
+    </div>
+    <div class="form-group">
+      <label>Numéro de fax</label>
+      <input type="text" class="form-control" name="faxNumber" [(ngModel)]="workplace.faxNumber" ngModel required>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="text" class="form-control" name="email" [(ngModel)]="workplace.email">
+    </div>
+    <div class="form-group">
+      <label>Fax</label>
+      <input type="text" class="form-control" name="fax" [(ngModel)]="workplace.fax">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="text" class="form-control" name="mail" [(ngModel)]="workplace.mail">
+    </div>
+    <div class="form-group">
+      <label>Personne à contacter (N° de téléphone)</label>
+      <input type="text" class="form-control" name="phoneContactNumber" [(ngModel)]="workplace.phoneContactNumber">
+    </div>
+
+    <div class="form-group">
+      <label>Date</label>
+      <input type="text" class="form-control" name="date" [(ngModel)]="workplace.date">
+    </div>
+
+    <button type="submit" (click)="save(f.value, f.valid)" class="btn btn-default">Valider</button>
+  </form>
+  <div style="margin-top: 20px" *ngIf="f">
+    <div>Form details:-</div>
+    <pre>Is form valid?: <br>{{f.valid | json}}</pre>
+    <pre>Is form submitted?: <br>{{f.submitted | json}}</pre>
+    <pre>submitted value: <br>{{f.value | json}}</pre>
+  </div>
+</div>

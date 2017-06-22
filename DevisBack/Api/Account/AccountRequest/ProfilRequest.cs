@@ -14,5 +14,6 @@ namespace DevisBack.Api.Account.AccountRequest
 
         public int AccessGroupModelId { get; set; }
 
+        public AccessGroupModel Access { get; set; }
     }
 }

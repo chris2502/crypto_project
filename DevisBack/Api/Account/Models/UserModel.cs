@@ -5,7 +5,6 @@ using ServiceStack.OrmLite;
 
 namespace DevisBack.Api.Account.Models
 {
-    [CompositeIndex("FirstName", "LastName", Unique = true)]
 	public class UserModel
 	{
         [AutoIncrement]
@@ -13,9 +12,9 @@ namespace DevisBack.Api.Account.Models
 		public string FirstName { get; set; }
 		public string LastName{get; set;}
 
-        [ForeignKey(typeof(AuthModel), OnDelete = "CASCADE", OnUpdate = "CASCADE")]       
+       // [ForeignKey(typeof(AuthModel), OnDelete = "CASCADE", OnUpdate = "CASCADE")]       
         public int? AuthModelId { get; set; }
-        [ForeignKey(typeof(ProfilModel), OnDelete = "CASCADE", OnUpdate = "CASCADE")]
+       // [ForeignKey(typeof(ProfilModel), OnDelete = "CASCADE", OnUpdate = "CASCADE")]
         public int? ProfilModelId { get; set; }
 
 

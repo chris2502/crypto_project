@@ -8,8 +8,6 @@ namespace DevisBack.Api
 	// All response class should inherit this class to refactor response code
     public class AllResponse
     {
-        public int? Id { get; set; }
-        public int? Code { get; set; }
-        public string MessageError { get; set; }
+        public int Code { get; set; }
     }
 }

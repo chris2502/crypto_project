@@ -10,7 +10,6 @@ using DevisBack.Api.Account.Models;
 using DevisBack.Tools.StaticTools;
 using ServiceStack.ServiceInterface;
 using MySql.Data.MySqlClient;
-using DevisBack.Api.DevisException;
 
 namespace DevisBack.Api.Account.Services
 {
@@ -26,6 +25,19 @@ namespace DevisBack.Api.Account.Services
 			}catch(UnauthorizedAccessException uae){
 				throw new UnauthorizedAccessException(uae.Message);
 			}*/
+            if(request.DoubleAuthenticate != null)
+            {
+                AuthModel auth = Db.Select<AuthModel>(x => x.DoubleAuthenticate == request.DoubleAuthenticate).FirstOrDefault();
+                if(auth != null)
+                {
+                    return new AuthResponse
+                    {
+                        Email = auth.Email,
+                        Token = auth.Token,
+                        Code = CodeHttp.OK
+                    };
+                }
+            }
             List<AuthModel> authList = null;
             AuthResponse authResponse = new AuthResponse();
             if (request.Token != null)
@@ -43,29 +55,40 @@ namespace DevisBack.Api.Account.Services
                     }                                                                                       
                 }
             }
-            else if (request.Email != null)
+            /*else if (request.Email != null)
             {
 
                 authList = Db.Select<AuthModel>(x => x.Email == request.Email &&  x.IsEnable == true );
 				int code = CodeHttp.INTERNAL_SERVER_ERROR;
                 foreach (AuthModel authTmp in authList)
                 {
-					code = (authTmp.sendMail())?CodeHttp.OK:CodeHttp.INTERNAL_SERVER_ERROR;
+				//	code = (authTmp.sendMail())?CodeHttp.OK:CodeHttp.INTERNAL_SERVER_ERROR;
                 }
                 return new AuthResponse
                 {
                     Code = code
                 };
 
-            }
+            }*/
             foreach (AuthModel authTmp in authList)
             {
-				if (authTmp.Token == null)
+				if (authTmp.Token == null || authTmp.Token == "")
 				{
 					authTmp.CreateToken("auth", true);
 					Db.Update<AuthModel>(new { Token = authTmp.Token }, Auth => Auth.Email == request.Email && Auth.IsEnable == true);
 
 				}
+                if(request.DoubleAuthenticate == null)
+                {
+                    authTmp.GenerataDoubleAuthenticate();
+                    Db.Update(authTmp);
+                    authTmp.sendMail("http://localhost:4200//Auth/Mail/" + request.Email + "/" + authTmp.DoubleAuthenticate);
+                    return new AuthResponse
+                    {
+                        Code = CodeHttp.OK
+                    };
+                }
+
 
                 authResponse = new AuthResponse
                 {
@@ -80,10 +103,6 @@ namespace DevisBack.Api.Account.Services
 
         public AuthResponse Post(AuthRequest request)
         {
-            if(!Authorizations.IsAdmin(Db, request.Token))
-            {
-                throw new AuthorizationException("Permission denied: You are not admin");
-            }
             if (!request.IsvalidEmail())
             {
                 throw new FormatException("L'adresse email n'est pas valide"); 
@@ -97,25 +116,21 @@ namespace DevisBack.Api.Account.Services
                 IsEnable = true
 
             };
+            bool check = true;
             try
             {
                 Db.Save(Auth);
             }catch(MySqlException ms)
             {
-                if(ms.Number == 1062)
-                {
-                    return new AuthResponse
-                    {
-                        Code = CodeHttp.INTERNAL_SERVER_ERROR,
-                        Message = ms.Message
-                    };
-                }
                 Console.WriteLine(ms);
+                check = false;
             }
-            return new AuthResponse
+            AuthResponse authResponseModel = new AuthResponse
             {
-                Code = CodeHttp.OK
+				Code = check ? CodeHttp.OK:CodeHttp.INTERNAL_SERVER_ERROR
             };
+
+            return authResponseModel;
         }
 
         public AuthResponse Put(AuthRequest request)

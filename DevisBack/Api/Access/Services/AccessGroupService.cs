@@ -6,39 +6,25 @@ using DevisBack.Api.Access.AccessReponse;
 using ServiceStack.ServiceInterface;
 using DevisBack.Tools.StaticTools;
 using DevisBack.Api.Access.AccessRequest;
-using DevisBack.Api.DevisException;
 
 namespace DevisBack.Api.Access.Servicess
 {
     public class AccessGroupService: Service
     {
-        public AccessGroupResponse Get(AccessGroupRequest request)
+        public object Get(AccessGroupRequest request)
         {
-            if (!Authorizations.IsAdmin(Db, request.Token))
-                throw new AuthorizationException("Permission denied: You are not admin", CodeHttp.BAD_REQUEST);
-         
-            if (request.Id != null)
-            {
-                return new AccessGroupResponse
-                {
-                    ListAccessGroup = Db.Where<AccessGroupModel>("Id", request.Id)
-                };
-            }
 
-            return new AccessGroupResponse
+           /* if (request.Id != null)
             {
-                ListAccessGroup = Db.Select<AccessGroupModel>()
-            }; 
+                return Db.SingleWhere<AccessGroupModel>("Id", request.Id);
+            }*/
+
+            return Db.Select<AccessGroupModel>();
         }
 
-        public AccessGroupResponse Post(AccessGroupRequest request)
+        public object Post(AccessGroupRequest request)
         {
             ComplexeRequest.PopulateRequest(ref request, Request);
-            if (!Authorizations.IsAdmin(Db, request.Token))
-            {
-                if (!Authorizations.IsAdmin(Db, request.Token))
-                    throw new AuthorizationException("Permission denied: You are not admin", CodeHttp.BAD_REQUEST);
-            }
             AccessGroupModel accessGroup = new AccessGroupModel
             {
             //    ListAccessAppli = request.ListAccessAppli,
@@ -46,10 +32,9 @@ namespace DevisBack.Api.Access.Servicess
             };
             Db.Save(accessGroup);
 
-            return new AccessGroupResponse
-            {
-                Code = CodeHttp.OK
-            };
+			AccessGroupResponse accessGroupResponseModel = new AccessGroupResponse ();
+
+            return accessGroupResponseModel;
         }
     }
 }

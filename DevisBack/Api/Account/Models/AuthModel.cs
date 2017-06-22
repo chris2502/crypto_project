@@ -8,7 +8,7 @@ using System.Net.Mail;
 using System.Net;
 using ServiceStack.Configuration;
 using DevisBack.Tools.DevisBackAnnotation;
-using System.ComponentModel;
+using System.Text;
 
 namespace DevisBack.Api.Account.Models
 {
@@ -22,13 +22,13 @@ namespace DevisBack.Api.Account.Models
         [AutoIncrement]
         public int? Id { get; set; }
 
-        [ReadOnly(true)]
+
         [Index(Unique = true)]
         public string Email { get; set; }
-        [ReadOnly(true)]
         public string Password { get; set; }
         [Index(Unique = true)]
         public string Token { get; set; }
+        public string DoubleAuthenticate { get; set; }
         //Avoid to disable account
         [Default(1)]
         public bool IsEnable { get; set; }
@@ -36,6 +36,11 @@ namespace DevisBack.Api.Account.Models
         public int  UserModelId { get; set; }
 
         public readonly static int timerToken= (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+
+        public void GenerataDoubleAuthenticate()
+        {
+            DoubleAuthenticate = System.Guid.NewGuid().ToString().PadLeft(13);
+        }
         public void CreateToken(string prefix, bool more_entropy)
         {
             if (string.IsNullOrEmpty(prefix))
@@ -59,19 +64,29 @@ namespace DevisBack.Api.Account.Models
         }
 
 
-        public bool sendMail()
+        public bool sendMail(string url)
         {
+            try
+            {
+                SmtpClient client = new SmtpClient();
+                client.Port = 587;
+                client.Host = "smtp.gmail.com";
+                client.EnableSsl = true;
+                client.Timeout = 10000;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new System.Net.NetworkCredential("cryptongoh@gmail.com", "christianetfaisal");
 
-			/*var message = new MimeMessage ();
-			message.From.Add (new MailboxAddress ("DevisBack", EmailChangePasswordBack));
-			message.To.Add (new MailboxAddress ("", Email));
-			message.Subject = "Mot de passe perdu";
-
-			message.Body = new TextPart ("plain") {
-				Text = @"Il semble que vous avez perdu votre mot de passe. Si c'est le cas veuillez cliquer sur le lien suivant:" +
-					"<a href='localhost:50304/"+Token+"/"+Email+">Chagner de mot de passe</a>'" +
-					"<br/>Si ce n'est pas vous, veuillez ignorer le message"
-			};*/
+                MailMessage mm = new MailMessage("sendtomyemail@domain.co.uk", "chrisebongue@hotmail.fr", "test", "<a href='" + url + "' >Se connecter</a>");
+                mm.BodyEncoding = UTF8Encoding.UTF8;
+                mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
+                client.Send(mm);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
 
             return true;
         }
