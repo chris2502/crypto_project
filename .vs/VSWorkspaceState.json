@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\DevisBack",
+    "\\DevisBack\\Api",
+    "\\DevisBack\\Api\\Account",
+    "\\DevisBack\\Api\\Account\\Models",
+    "\\DevisBack\\Api\\Account\\Services"
+  ],
+  "SelectedNode": "\\DevisBack\\Web.config",
+  "PreviewInSolutionExplorer": false
+}
