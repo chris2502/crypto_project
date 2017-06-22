@@ -47,7 +47,6 @@ namespace DevisBack.Api.Account.Services
             }
             else if(request.Email != null && request.Password != null)
             {
-                //authList = Db.Select<AuthModel>(x => x.Email == request.Email && x.Password == request.Password && x.IsEnable == true);
                 AuthModel authsimple = Db.Select<AuthModel>(x => x.Email == request.Email && x.IsEnable == true).FirstOrDefault();
                 if(authsimple != null){
                     authList = new List<AuthModel>();
