@@ -37,7 +37,7 @@ namespace DevisBack.Api.Account.AccountRequest
 	    {
 	        get
 	        {
-	            if (String.IsNullOrEmpty(tempPassword))
+	            if (password != null && String.IsNullOrEmpty(tempPassword))
                 {
                     byte[] result = CBC.dechiffrer(new byte[] { 55, 66, 77, 88 }, password);
                     string strResult = "";

@@ -27,6 +27,7 @@ import { TabsModule } from 'ngx-bootstrap';
 import { FormDevisClassicComponent } from './form-devis-classic/form-devis-classic.component';
 import { FormClientDevisClassicComponent } from './form-devis-classic/form-client-devis-classic/form-client-devis-classic.component';
 import { FormWorkPlaceDevisClassicComponent } from './form-devis-classic/form-work-place-devis-classic/form-work-place-devis-classic.component';
+import { TokenAuthComponent } from './token-auth/token-auth.component';
 
 
 
@@ -43,7 +44,8 @@ import { FormWorkPlaceDevisClassicComponent } from './form-devis-classic/form-wo
     DevisClassicComponent,
     FormDevisClassicComponent,
     FormClientDevisClassicComponent,
-    FormWorkPlaceDevisClassicComponent
+    FormWorkPlaceDevisClassicComponent,
+    TokenAuthComponent
   ],
   imports: [
     BrowserModule,

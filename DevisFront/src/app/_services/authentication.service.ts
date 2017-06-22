@@ -113,6 +113,11 @@ export class AuthenticationService {
     ;
   }
 
+  authent(mail: string, token: string){
+    return this.http.get(backend.url + '/Auth/Mail/'+ mail +'/'+ token)
+      .map((res: Response) => res.json());
+  }
+
   register(email: string, password: string) {
 
     var uneCle = new Uint8Array(TAILLE_BLOC);
@@ -125,6 +130,12 @@ export class AuthenticationService {
     return this.http.post(backend.url + '/Auth/Signup/'+email+'/'+this.chiffrer(uneCle, this.stringToByteArray(password)), '')  // To change
       .map((response: Response) => response.json())
       .catch( (error: any) => Observable.throw (error.json().error || 'Server error during register'));
+  }
+
+  logout(token :string){
+    return this.http.put(backend.url + '/Auth/Disconnect/' + token, '')
+      .map((response :Response) => response.json())
+      .catch( (error: any) => Observable.throw (error.json().error || 'Server error during logout'));
   }
 
 }

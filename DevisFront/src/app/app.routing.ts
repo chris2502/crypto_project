@@ -8,6 +8,7 @@ import {HomeComponent} from './home/home.component';
 import {RegisterComponent} from './register/register.component';
 import {DevisClassicComponent} from './devis-classic/devis-classic.component';
 import {FormDevisClassicComponent} from './form-devis-classic/form-devis-classic.component';
+import {TokenAuthComponent} from './token-auth/token-auth.component';
 
 const appRoutes: Routes = [
   { path: '',  component: HomeComponent, canActivate: [AuthGuard]},
@@ -16,6 +17,7 @@ const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'devisClassic', component: DevisClassicComponent },
   { path: 'formDevisClassic', component: FormDevisClassicComponent },
+  { path: 'token/:mail/:token', component: TokenAuthComponent},
   // otherwise redirect to home
   { path: '**', redirectTo: '' }
 ];

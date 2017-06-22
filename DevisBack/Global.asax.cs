@@ -23,6 +23,7 @@ using ServiceStack.WebHost.Endpoints;
 
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
+using ServiceStack.ServiceInterface.Cors;
 
 namespace DevisBack
 {
@@ -52,10 +53,8 @@ namespace DevisBack
                     },
                 });
 
-				// Enable the validation feature
-				Plugins.Add(new ValidationFeature());
-
-
+                // Enable the validation feature
+                Plugins.Add(new ValidationFeature());
 
 
                 //register any dependencies your services use, e.g:
@@ -77,7 +76,7 @@ namespace DevisBack
                     .Add(typeof(AuthRequest), "/Auth/Signup/{Email}/{Password}", "POST")
 
                     .Add(typeof(AuthRequest), "/Auth/Update/{Token}/{Password}", "PUT")
-                    .Add(typeof(AuthRequest), "/Auth/Disconnect/{Token}", "PUT")
+                    .Add(typeof(AuthRequest), "/Auth/Disconnect/{Token}", "PUT, OPTIONS")
 
                     .Add(typeof(AuthRequest), "/Auth/Delete/{Token}", "DELETE")
 
@@ -124,8 +123,6 @@ namespace DevisBack
                     .Add(typeof(TableAccessCompositionRequest), "/Access/ByComposite/{CompositeId}", "GET", "Read Access", "return list of Access got by CompositeId")
                     .Add(typeof(TableAccessCompositionRequest), "/Access/ByLeaf/{LeafId}", "GET", "Read Access", "Return list of Access Got by LeafId")
                     ;
-
-                    
 
                 AppSettings appSettings = new AppSettings();
 

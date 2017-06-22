@@ -64,7 +64,7 @@ namespace DevisBack.Api.Account.Models
         }
 
 
-        public bool sendMail(string url)
+        public bool sendMail(string url, string dest)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace DevisBack.Api.Account.Models
                 client.UseDefaultCredentials = false;
                 client.Credentials = new System.Net.NetworkCredential("cryptongoh@gmail.com", "christianetfaisal");
 
-                MailMessage mm = new MailMessage("sendtomyemail@domain.co.uk", "chrisebongue@hotmail.fr", "test", "<a href='" + url + "' >Se connecter</a>");
+                MailMessage mm = new MailMessage("sendtomyemail@domain.co.uk", dest, "test", "<a href='" + url + "' >Se connecter</a>");
                 mm.BodyEncoding = UTF8Encoding.UTF8;
                 mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
                 client.Send(mm);

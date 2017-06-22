@@ -30,15 +30,14 @@ export class LoginComponent implements OnInit{
     event.preventDefault();
     this.authenticationService.login(username, password)
       .subscribe(
-        data => {
-          let user = data;
-          if (user && user.Token) {
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            this.alertService.success('Registration successful', true);
-            this.router.navigate([this.returnUrl]);
+        response => {
+
+          console.log(response)
+
+          if (response["Code"] == 200) {
+            this.alertService.success('Authentification correcte, vérifiez votre boîte mail', true);
           }
-          else {
+          else{
             this.alertService.error('Utilisateur ou mot de passe incorrect', false);
           }
 
@@ -50,11 +49,20 @@ export class LoginComponent implements OnInit{
   }
 
   logout() {
-    // remove user from local storage to log user out
-    if (localStorage.getItem('currentUser')) {
-      this.alertService.success('Utilisateur déconnecter', true);
+    let user = localStorage.getItem('currentUser');
+    if (user) {
+      this.authenticationService.logout(JSON.parse(user).Token).subscribe(
+        data => {
+          localStorage.removeItem('currentUser');
+          this.alertService.success('Utilisateur déconnecté', true);
+        },
+        error => {
+          this.alertService.error(error);
+        });
+
     }
-    localStorage.removeItem('currentUser');
+
+
   }
 
 }
