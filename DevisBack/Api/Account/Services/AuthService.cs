@@ -50,6 +50,8 @@ namespace DevisBack.Api.Account.Services
                 //authList = Db.Select<AuthModel>(x => x.Email == request.Email && x.Password == request.Password && x.IsEnable == true);
                 AuthModel authsimple = Db.Select<AuthModel>(x => x.Email == request.Email && x.IsEnable == true).FirstOrDefault();
                 if(authsimple != null){
+                    authList = new List<AuthModel>();
+
                     if(BCrypt.CheckPassword(request.Password, authsimple.Password)){
                         authList.Add(authsimple);
                     }                                                                                       
@@ -116,6 +118,7 @@ namespace DevisBack.Api.Account.Services
                 IsEnable = true
 
             };
+            Console.WriteLine(Auth.Password);
             bool check = true;
             try
             {
